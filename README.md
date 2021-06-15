@@ -15,9 +15,12 @@ Se realizará un benchmarking entre las funcionalidades geoespaciales de Postgre
 
 Para tal fin se realizarán queries convencionales centradas en la lógico de negocios de un restaurante o una cadena de restaurantes. Entre estos queries se analizará:
 
-* Cercanía con consumidores finales.
-* Cantidad de restaurantes de una misma franquicia en una zona geográfica.
-* Distancias entre locales de una misma cadena o de algún competidor directo.
+* Dado una entidad correspondiente a una persona, calcular los restaurantes más cercanos a su posición dado un cierto parámetro.
+* Teniendo en cuenta una cadena específica de restaurantes, calcular las sucursales más cercanas.
+* Cruzando los datos con los polígonos que describe cada Estado, analizar en cada uno qué cadena es la más predominante.
+* Calcular la Ciudad o el Estado que posee mayor variedad de franquicias.
+* Dadas dos entidades correspondientes a competidores directos, calcular la distancia mínima entre dos sucursales.
+* Por medio del cálculo del área o de la distancia, analizar qué franquicia tiene mayor "cobertura" a nivel país.
 
 Entre las métricas que consideraremos para el benchmarking se encuentran:
 
