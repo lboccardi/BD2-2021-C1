@@ -1,0 +1,8 @@
+# Source Files #
+
+.idea/
+.vscode/
+
+# Credentials #
+
+src/credentials.py
