@@ -26,7 +26,7 @@ def findRandomRestaurant(cursor):
     print("\nExecution query time:", time.time() - start_time)    
     result = cursor.fetchone()
     print("Restaurant:")
-    print(result)
+    print(result['name'],'-',result['address'])
     return result
 
 
@@ -36,7 +36,7 @@ def findRandomState(cursor):
     print("\nExecution query time:", time.time() - start_time)    
     result = cursor.fetchone()
     print("State:")
-    print(result)
+    print(result['name'])
     return result
 
 
@@ -90,9 +90,9 @@ if __name__ == '__main__':
     #random_restaurant = findRandomRestaurant(cur)
     #findNearestCompetitor(cur,random_restaurant)
 
-    random_state = findRandomState(cur)
+    #random_state = findRandomState(cur)
     #findRestaurantsInState(cur,random_state)
-    findFranchiseCountInState(cur,random_state)
+    #findFranchiseCountInState(cur,random_state)
     cur.close()
     conn.close()
 

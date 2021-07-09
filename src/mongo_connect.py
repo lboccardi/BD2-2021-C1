@@ -34,31 +34,31 @@ def findRandomRestaurant(db):
     collection = db['restaurants']
 
     start_time = time.time()
-    x = collection.aggregate([{ "$sample": { "size": 1 } }])
-    x = list(x)[0]
-    print("Restaurant:\n")
-    pprint.pprint(x)
-    print("Execution query time:", time.time() - start_time)
-    return x
+    result= collection.aggregate([{ "$sample": { "size": 1 } }])
+    print("\nExecution query time:", time.time() - start_time)
+    result= list(result)[0]
+    print("Restaurant:")
+    print(result['properties']['name'],'-',result['properties']['address'])
+    return result
 
 
 def findRandomState(db):
     collection = db['states']
 
     start_time = time.time()
-    x = collection.aggregate([{ "$sample": { "size": 1 } }])
-    x = list(x)[0]
-    print("State:\n")
-    pprint.pprint(x)
-    print("Execution query time:", time.time() - start_time)
-    return x
+    result= collection.aggregate([{ "$sample": { "size": 1 } }])
+    print("\nExecution query time:", time.time() - start_time)
+    result= list(result)[0]
+    print("State:")
+    print(result['properties']['name'])
+    return result
 
 
 def findNearestCompetitor(db,restaurant):
     collection = db['restaurants']
 
     start_time = time.time()
-    x = collection.aggregate([
+    result= collection.aggregate([
            { "$geoNear": {
                "near": restaurant['geometry'],
                "spherical": True,
@@ -69,16 +69,18 @@ def findNearestCompetitor(db,restaurant):
            },{
            "$limit":1
            }])
-    print("\n\nNearest competitor:")
-    pprint.pprint(list(x)[0])
-    print("Execution query time:", time.time() - start_time)    
+    print("\nExecution query time:", time.time() - start_time)
+    result= list(result)[0]    
+    print("Nearest competitor:")
+    pprint.pprint(result)
+    return result
 
 
 def findRestaurantsInState(db,state):
     collection = db['restaurants']
 
     start_time = time.time()
-    x = list(collection.aggregate([{ 
+    result= collection.aggregate([{ 
             "$match": {
                 'geometry':{
                     '$geoWithin': {'$geometry': state['geometry']}
@@ -86,17 +88,19 @@ def findRestaurantsInState(db,state):
               }
         },
             {"$project":{'properties.name':1,'properties.address':1}}
-    ]))
-    print("\n\nRestaurants in: ",state['properties']['name'],len(x))
-    pprint.pprint(x)
-    print("Execution query time:", time.time() - start_time)
-    return x
+    ])
+    print("\nExecution query time:", time.time() - start_time)
+    result= list(result)
+    print("Restaurants in: ",state['properties']['name'],len(result))
+    for r in result:
+        print(r['properties']['name'],'-',r['properties']['address'])
+    return result
 
 def findFranchiseCountInState(db,state):
     collection = db['restaurants']
 
     start_time = time.time()
-    x = list(collection.aggregate([{ 
+    result= collection.aggregate([{ 
             "$match": {
                 'geometry':{
                     '$geoWithin': {'$geometry': state['geometry']}
@@ -104,11 +108,13 @@ def findFranchiseCountInState(db,state):
               }
         },
             {"$group" : {"_id":"$properties.name", "count":{"$sum":1}}},
-    ]))
-    print("\n\nRestaurants by franchise in: ",state['properties']['name'])
-    pprint.pprint(x)
-    print("Execution query time:", time.time() - start_time)
-    return x
+    ])
+    print("\nExecution query time:", time.time() - start_time)
+    result= list(result)
+    print("Restaurants by franchise in: ",state['properties']['name'])
+    for r in result:
+        print(r['_id'],'-',r['count'])
+    return result
 
 
 if __name__ == '__main__':
@@ -125,10 +131,9 @@ if __name__ == '__main__':
     
     ######################
 
-    #random_restaurant = findRandomRestaurant(db)
-    #findNearestCompetitor(db,random_restaurant)
+    random_restaurant = findRandomRestaurant(db)
+    findNearestCompetitor(db,random_restaurant)
 
     #random_state = findRandomState(db)
     #findRestaurantsInState(db,random_state)
-
     #findFranchiseCountInState(db,random_state)
