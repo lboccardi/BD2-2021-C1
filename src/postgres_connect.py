@@ -4,6 +4,7 @@ import time
 
 DB_NAME = 'bd2'
 IP_ADDRESS = 'postgres-bd.c3amsvppfcze.us-east-1.rds.amazonaws.com'
+PORT = 5432
 # DB_NAME = 'postgres'
 # IP_ADDRESS = '127.0.0.1'
 # PORT = 5433
