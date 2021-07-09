@@ -116,24 +116,38 @@ def findFranchiseCountInState(db,state):
         print(r['_id'],'-',r['count'])
     return result
 
+def find_state_by_restaurant(db, restaurant):
+    collection = db['states']
+    result = collection.find({
+        'geometry': {
+            '$geoIntersects': {
+                '$geometry': restaurant['geometry']
+            }
+        }
+    })
+    return result
 
 if __name__ == '__main__':
     uri = "mongodb://{}:{}@{}:{}".format(MG_USER, MG_PASSWORD, IP_ADDRESS, PORT)
+    # uri = "mongodb://localhost:27017/academica"
 
     db = connect_to_mongo(uri, DB_NAME)
     #collection = db['restaurants']
 
-    #start_time = time.time()
+    random_restaurant = findRandomRestaurant(db)
+    start_time = time.time()
     #result = restaurants_by_radius(collection, {"type": "Point", "coordinates": [-74.89021, 44.9213]}, 5000)
-    #print(list(result))
-    #print("Execution query time:", time.time() - start_time)
+    result = find_state_by_restaurant(db, random_restaurant)
+    print("Execution query time:", time.time() - start_time)
+    print(f"state: {list(result)[0]['properties']['name']}")
+    
     
     
     ######################
 
-    random_restaurant = findRandomRestaurant(db)
-    findNearestCompetitor(db,random_restaurant)
+    # random_restaurant = findRandomRestaurant(db)
+    # findNearestCompetitor(db,random_restaurant)
 
-    #random_state = findRandomState(db)
+    # random_state = findRandomState(db)
     #findRestaurantsInState(db,random_state)
-    #findFranchiseCountInState(db,random_state)
+    # findFranchiseCountInState(db,random_state)

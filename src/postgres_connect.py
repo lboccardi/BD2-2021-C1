@@ -4,12 +4,15 @@ import time
 
 DB_NAME = 'bd2'
 IP_ADDRESS = 'postgres-bd.c3amsvppfcze.us-east-1.rds.amazonaws.com'
-PORT = 5432
+# DB_NAME = 'postgres'
+# IP_ADDRESS = '127.0.0.1'
+# PORT = 5433
 
 try:
     from credentials import *
 except ImportError:
     pass
+
 
 
 def connect_to_postgres(dbname, user, password, host, port):
@@ -22,7 +25,7 @@ def restaurants_by_radius(cursor, person, radius):
 
 def findRandomRestaurant(cursor):
     start_time = time.time()
-    cursor.execute("select * from restaurants where random() < 1000 limit 1")
+    cursor.execute("select * from restaurants order by random() limit 1")
     print("\nExecution query time:", time.time() - start_time)    
     result = cursor.fetchone()
     print("Restaurant:")
@@ -71,18 +74,28 @@ def findFranchiseCountInState(cursor,state):
     return result
 
 
+def find_state_by_restaurant(cursor, restaurant):
+    print(restaurant)
+    cursor.execute(f"select name from states where st_contains(wkt, '{restaurant['geo']}')")
+    return cursor.fetchall()
+
+
 if __name__ == '__main__':
 
     conn = connect_to_postgres(DB_NAME, PG_USER, PG_PASSWORD, IP_ADDRESS, PORT)
     cur = conn.cursor(cursor_factory=RealDictCursor)
 
+    rest = findRandomRestaurant(cur)
+
     start_time = time.time()
+
+    result = find_state_by_restaurant(cur, dict(rest))
 
     # cur.execute(f"SELECT * FROM STATES")
     #result = restaurants_by_radius(cur, "-74.89021, 44.9213", 5000)
 
-    #print("Execution query time:", time.time() - start_time)
-    #print(list(result))
+    print("Execution query time:", time.time() - start_time)
+    print(dict(result[0]))
 
     # for i in cur.fetchall():
     #     print(i[1])
