@@ -46,7 +46,7 @@ def findRandomState(cursor):
 
 def findNearestCompetitor(cursor,restaurant):
     start_time = time.time()
-    cursor.execute(f"select name,address, st_distance(geom::geography, st_makepoint({restaurant['longitude']},{restaurant['latitude']})::geography) as distance from restaurants where name!= %s order by distance limit 1",(restaurant['name'],))
+    cursor.execute(f"select name,address, st_distance(geom::geography,'{restaurant['geom']}'::geometry::geography) as distance from restaurants where name!= %s order by distance limit 1",(restaurant['name'],))
     print("\nExecution query time:", time.time() - start_time)    
     result = cursor.fetchone()
     print("Nearest competitor:")
@@ -93,19 +93,19 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    result = find_state_by_restaurant(cur, dict(rest))
+    #result = find_state_by_restaurant(cur, dict(rest))
 
     # cur.execute(f"SELECT * FROM STATES")
     #result = restaurants_by_radius(cur, "-74.89021, 44.9213", 5000)
 
-    print("Execution query time:", time.time() - start_time)
-    print(dict(result[0]))
+    #print("Execution query time:", time.time() - start_time)
+    #print(dict(result[0]))
 
     # for i in cur.fetchall():
     #     print(i[1])
 
-    #random_restaurant = findRandomRestaurant(cur)
-    #findNearestCompetitor(cur,random_restaurant)
+    random_restaurant = findRandomRestaurant(cur)
+    findNearestCompetitor(cur,random_restaurant)
 
     #random_state = findRandomState(cur)
     #findRestaurantsInState(cur,random_state)
