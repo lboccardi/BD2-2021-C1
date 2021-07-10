@@ -116,8 +116,8 @@ class MongoDB:
         self.file.write("\n")
         return total_time
 
-    def find_state_by_restaurant(self, restaurant):
-        collection = self.db['states']
+    def find_county_by_restaurant(self, restaurant):
+        collection = self.db['counties']
         start_time = time.time()
         result = collection.find({
             'geometry': {
@@ -129,7 +129,7 @@ class MongoDB:
         total_time = time.time() - start_time
         result = list(result)
         if result:
-            print("Restaurant",restaurant['properties']['name'],"-",restaurant['properties']['address'],"is in state:",result[0]['properties']['name'],file=self.file)
+            print("Restaurant",restaurant['properties']['name'],"-",restaurant['properties']['address'],"is in county:",result[0]['properties']['name'],file=self.file)
         else:
             print("Restaurant",restaurant['properties']['name'],"-",restaurant['properties']['address'],"is in state:","-",file=self.file)
         self.file.write("\n")

@@ -1,6 +1,8 @@
 from src.mongo_connect import MongoDB
 from src.postgres_connect import Postgis
 import sys
+import time
+
 
 MONGO_DB_NAME = 'bd2'
 MONGO_IP_ADDRESS = '52.72.181.125'
@@ -25,11 +27,12 @@ times_labels=["Find State by a restaurant","Find nearest competitor from a resta
 mongo_times=[0,0,0,0,0,0]
 postgres_times=[0,0,0,0,0,0]
 
+start_time = time.time()
 for i in range(ITERATIONS):
     #### MONGO ####
     mongo.writeIterationNum(i)
     r = mongo.findRandomRestaurant()
-    mongo_times[0] += mongo.find_state_by_restaurant(r)
+    mongo_times[0] += mongo.find_county_by_restaurant(r)
     mongo_times[1] += mongo.findNearestCompetitor(r)
     c = mongo.findRandomCustomer()
     mongo_times[2] += mongo.restaurants_by_radius(c, 50000)
@@ -42,7 +45,7 @@ for i in range(ITERATIONS):
     ###Postgres"
     pg.writeIterationNum(i)
     r = pg.findRandomRestaurant()
-    postgres_times[0] += pg.find_state_by_restaurant(r)
+    postgres_times[0] += pg.find_counties_by_restaurant(r)
     postgres_times[1] += pg.findNearestCompetitor(r)
     c = pg.findRandomCustomer()
     postgres_times[2] += pg.restaurants_by_radius(c, 50000)
@@ -52,6 +55,8 @@ for i in range(ITERATIONS):
     postgres_times[3] += pg.findFranchiseCountInState(s)
     postgres_times[4] += pg.findRestaurantsInState(s)
 
+total_time = time.time() - start_time    
+print("\nIterations:",ITERATIONS,"- Total time:",total_time,"\n\n")
 for i in range(len(mongo_times)):
     print(times_labels[i],":")
     print("\tMongo:")

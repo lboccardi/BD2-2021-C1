@@ -83,12 +83,15 @@ class Postgis:
         return total_time
 
 
-    def find_state_by_restaurant(self, restaurant):
+    def find_counties_by_restaurant(self, restaurant):
         start_time = time.time()
-        self.cur.execute(f"select name from states where st_contains(wkt, '{restaurant['geom']}')")
+        self.cur.execute(f"select name from counties where st_contains(wkt, '{restaurant['geom']}')")
         total_time = time.time() - start_time
         result = self.cur.fetchone()
-        print("Restaurant",restaurant['name'],"-",restaurant['address'],"is in state:",result['name'],file=self.file)
+        if result:
+            print("Restaurant",restaurant['name'],"-",restaurant['address'],"is in county:",result['name'],file=self.file)
+        else:
+            print("Restaurant",restaurant['name'],"-",restaurant['address'],"is in county: - ",file=self.file)
         self.file.write("\n")
         return total_time
 
