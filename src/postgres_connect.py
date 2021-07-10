@@ -77,7 +77,7 @@ def findFranchiseCountInState(cursor,state):
 
 def find_state_by_restaurant(cursor, restaurant):
     print(restaurant)
-    cursor.execute(f"select name from states where st_contains(wkt, '{restaurant['geo']}')")
+    cursor.execute(f"select name from states where st_contains(wkt, '{restaurant['geom']}')")
     return cursor.fetchall()
 
 def franchises_by_state(cursor, state):
@@ -93,10 +93,10 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    #result = find_state_by_restaurant(cur, dict(rest))
+    result = find_state_by_restaurant(cur, dict(rest))
 
     # cur.execute(f"SELECT * FROM STATES")
-    #result = restaurants_by_radius(cur, "-74.89021, 44.9213", 5000)
+    result = restaurants_by_radius(cur, "-74.89021, 44.9213", 5000)
 
     #print("Execution query time:", time.time() - start_time)
     #print(dict(result[0]))
@@ -104,8 +104,8 @@ if __name__ == '__main__':
     # for i in cur.fetchall():
     #     print(i[1])
 
-    random_restaurant = findRandomRestaurant(cur)
-    findNearestCompetitor(cur,random_restaurant)
+    #random_restaurant = findRandomRestaurant(cur)
+    #findNearestCompetitor(cur,random_restaurant)
 
     #random_state = findRandomState(cur)
     #findRestaurantsInState(cur,random_state)
