@@ -36,7 +36,7 @@ def findRandomRestaurant(cursor):
 
 def findRandomState(cursor):
     start_time = time.time()
-    cursor.execute("select * from states where random() < 1000 limit 1")
+    cursor.execute("select * from states order by random() limit 1")
     print("\nExecution query time:", time.time() - start_time)    
     result = cursor.fetchone()
     print("State:")
@@ -80,6 +80,9 @@ def find_state_by_restaurant(cursor, restaurant):
     cursor.execute(f"select name from states where st_contains(wkt, '{restaurant['geo']}')")
     return cursor.fetchall()
 
+def franchises_by_state(cursor, state):
+    cursor.execute(f"select count(distinct name) as franchises from restaurants where st_contains(st_polyfromtext('{state['wkt']}'), geom)")
+    return cursor.fetchone()
 
 if __name__ == '__main__':
 

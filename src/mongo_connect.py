@@ -1,9 +1,10 @@
+import collections
 from pymongo import MongoClient
 import time
 import pprint
 
 DB_NAME = 'bd2'
-IP_ADDRESS = '34.201.242.58'
+IP_ADDRESS = '52.72.181.125'
 PORT = 27017
 
 
@@ -126,6 +127,24 @@ def find_state_by_restaurant(db, restaurant):
         }
     })
     return result
+
+def franchises_by_state(db, state):
+    collection = db['restaurants']
+    return collection.aggregate([
+        {
+            '$match': {
+                'geometry': {
+                    '$geoWithin': {'$geometry': state['geometry']}
+                }
+            }
+        },
+        {
+            '$group': {'_id': "$properties.name", 'total': {'$sum': 1}}
+        },
+        {
+            '$count': "franchises"
+        }
+    ])
 
 if __name__ == '__main__':
     uri = "mongodb://{}:{}@{}:{}".format(MG_USER, MG_PASSWORD, IP_ADDRESS, PORT)
