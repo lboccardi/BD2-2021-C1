@@ -11,3 +11,4 @@ src/__pycache__/
 # Extra #
 
 aux.json
+*.txt
