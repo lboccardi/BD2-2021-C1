@@ -7,3 +7,7 @@
 
 src/credentials.py
 src/__pycache__/
+
+# Extra #
+
+aux.json
