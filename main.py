@@ -1,7 +1,6 @@
 from src.mongo_connect import MongoDB
 from src.postgres_connect import Postgis
-import sys
-import time
+import sys, time, os
 
 
 MONGO_DB_NAME = 'bd2'
@@ -13,17 +12,26 @@ PG_IP_ADDRESS = 'postgres-bd.c3amsvppfcze.us-east-1.rds.amazonaws.com'
 PG_PORT = 5432
 
 ITERATIONS = int(sys.argv[1])
+FORKS = int(sys.argv[2])
 
 try:
     from src.credentials import *
 except ImportError:
     pass
 
+i = 0
+for i in range(FORKS-1):
+    pid = os.fork()
+    if (pid == 0):
+        break
+
+print("Process ID:", os.getpid())
+
 uri = "mongodb://{}:{}@{}:{}".format(MG_USER, MG_PASSWORD, MONGO_IP_ADDRESS, MONGO_PORT)
 mongo = MongoDB(uri, MONGO_DB_NAME)
 pg = Postgis(PG_DB_NAME, PG_USER, PG_PASSWORD, PG_IP_ADDRESS, PG_PORT)
 
-times_labels=["Find State by a restaurant","Find nearest competitor from a restaurant","Find Restaurant by costumer","Find restaurant per franchise in State","Find all the restaurants in a State","Find count of distinct franchises on State"]
+times_labels=["Find County by a restaurant","Find nearest competitor from a restaurant","Find Restaurant by costumer","Find restaurant per franchise in State","Find all the restaurants in a State","Find count of distinct franchises on State"]
 mongo_times=[0,0,0,0,0,0]
 postgres_times=[0,0,0,0,0,0]
 
@@ -37,8 +45,10 @@ for i in range(ITERATIONS):
     c = mongo.findRandomCustomer()
     mongo_times[2] += mongo.restaurants_by_radius(c, 50000)
 
+    t = mongo.findRandomCounty()
+    mongo_times[5] += mongo.franchises_by_county(t)
+
     s = mongo.findRandomState()
-    mongo_times[5] += mongo.franchises_by_state(s)
     mongo_times[3] += mongo.findFranchiseCountInState(s)
     mongo_times[4] += mongo.findRestaurantsInState(s)
 
@@ -49,9 +59,11 @@ for i in range(ITERATIONS):
     postgres_times[1] += pg.findNearestCompetitor(r)
     c = pg.findRandomCustomer()
     postgres_times[2] += pg.restaurants_by_radius(c, 50000)
+    
+    t = pg.findRandomCounty()
+    postgres_times[5] += pg.franchises_by_county(t)
 
     s = pg.findRandomState()
-    postgres_times[5] += pg.franchises_by_state(s)
     postgres_times[3] += pg.findFranchiseCountInState(s)
     postgres_times[4] += pg.findRestaurantsInState(s)
 

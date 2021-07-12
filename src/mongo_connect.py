@@ -1,7 +1,5 @@
-import collections
 from pymongo import MongoClient
-import time
-import pprint
+import time,os
 
 def connect_to_mongo(uri, db_name):
     return MongoClient(uri)[db_name]
@@ -10,7 +8,8 @@ class MongoDB:
 
     def __init__(self, uri, db_name):
         self.db = connect_to_mongo(uri, db_name)
-        self.file = open('mongo_output.txt', 'w')
+        file_name = f"mongo_output_{os.getpid()}.txt"
+        self.file = open(file_name, 'w')
 
     def restaurants_by_radius(self, person, radius):
         start_time = time.time()
@@ -40,6 +39,12 @@ class MongoDB:
 
     def findRandomState(self):
         collection = self.db['states']
+        result= collection.aggregate([{ "$sample": { "size": 1 } }])
+        result= list(result)[0]
+        return result
+
+    def findRandomCounty(self):
+        collection = self.db['counties']
         result= collection.aggregate([{ "$sample": { "size": 1 } }])
         result= list(result)[0]
         return result
@@ -106,7 +111,7 @@ class MongoDB:
                     }
                 }
             },
-                {"$group" : {"_id":"$properties.name", "count":{"$sum":1}}},
+                {"$group" : {"_id":"$properties.name", "count":{"$sum":1}}}
         ])
         total_time = time.time() - start_time
         result= list(result)
@@ -135,14 +140,14 @@ class MongoDB:
         self.file.write("\n")
         return total_time
 
-    def franchises_by_state(self, state):
+    def franchises_by_county(self, county):
         collection = self.db['restaurants']
         start_time = time.time()
         result = collection.aggregate([
             {
                 '$match': {
                     'geometry': {
-                        '$geoWithin': {'$geometry': state['geometry']}
+                        '$geoWithin': {'$geometry': county['geometry']}
                     }
                 }
             },
@@ -156,9 +161,9 @@ class MongoDB:
         total_time = time.time() - start_time
         result = list(result)
         if result:
-            print("State",state['properties']['name']," has ",result[0]['franchises'],"distinct franchises",file=self.file)
+            print("County",county['properties']['name']," has ",result[0]['franchises'],"distinct franchises",file=self.file)
         else:
-            print("State",state['properties']['name']," has 0 distinct franchises",file=self.file)
+            print("County",county['properties']['name']," has 0 distinct franchises",file=self.file)
         self.file.write("\n")
         return total_time
 
