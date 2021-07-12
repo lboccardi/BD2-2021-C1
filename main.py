@@ -1,7 +1,8 @@
 from src.mongo_connect import MongoDB
 from src.postgres_connect import Postgis
 import sys, time, os
-
+import pandas as pd
+import numpy as np
 
 MONGO_DB_NAME = 'bd2'
 MONGO_IP_ADDRESS = '52.72.181.125'
@@ -68,12 +69,26 @@ for i in range(ITERATIONS):
     postgres_times[4] += pg.findRestaurantsInState(s)
 
 total_time = time.time() - start_time    
-print("\nIterations:",ITERATIONS,"- Total time:",total_time,"\n\n")
-for i in range(len(mongo_times)):
-    print(times_labels[i],":")
-    print("\tMongo:")
-    print("\t\ttotal:",mongo_times[i])
-    print("\t\taverage:",mongo_times[i]/ITERATIONS)
-    print("\tPostgres:")
-    print("\t\ttotal:",postgres_times[i])
-    print("\t\taverage:",postgres_times[i]/ITERATIONS)
+print(os.getpid(),"- Iterations:",ITERATIONS,"- Total time:",total_time,"\n\n")
+# for i in range(len(mongo_times)):
+#     print(times_labels[i],":")
+#     print("\tMongo:")
+#     print("\t\ttotal:",mongo_times[i])
+#     print("\t\taverage:",mongo_times[i]/ITERATIONS)
+#     print("\tPostgres:")
+#     print("\t\ttotal:",postgres_times[i])
+#     print("\t\taverage:",postgres_times[i]/ITERATIONS)
+    
+file_name = f"results_{os.getpid()}.csv"
+mongo_times_prom=[0,0,0,0,0,0]
+postgres_times_prom=[0,0,0,0,0,0]
+for i in range(6):
+    mongo_times_prom[i]=mongo_times[i]/ITERATIONS
+    postgres_times_prom[i]=postgres_times[i]/ITERATIONS
+
+result = np.array([mongo_times,mongo_times_prom,postgres_times,postgres_times_prom])
+result = result.T
+
+df=pd.DataFrame(result,columns=['mongo total','mongo promedio','postgres total','postgres promedio'])
+df.to_csv(file_name)
+
