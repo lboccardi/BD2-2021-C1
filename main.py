@@ -14,6 +14,7 @@ PG_PORT = 5432
 
 ITERATIONS = int(sys.argv[1])
 FORKS = int(sys.argv[2])
+DECIMALS = int(sys.argv[3])
 
 try:
     from src.credentials import *
@@ -69,26 +70,26 @@ for i in range(ITERATIONS):
     postgres_times[4] += pg.findRestaurantsInState(s)
 
 total_time = time.time() - start_time    
-print(os.getpid(),"- Iterations:",ITERATIONS,"- Total time:",total_time,"\n\n")
-# for i in range(len(mongo_times)):
-#     print(times_labels[i],":")
-#     print("\tMongo:")
-#     print("\t\ttotal:",mongo_times[i])
-#     print("\t\taverage:",mongo_times[i]/ITERATIONS)
-#     print("\tPostgres:")
-#     print("\t\ttotal:",postgres_times[i])
-#     print("\t\taverage:",postgres_times[i]/ITERATIONS)
+print(os.getpid(),"- Iterations:",ITERATIONS,"- Total time:",round(total_time,5),"\n\n")
+for i in range(len(mongo_times)):
+    print(times_labels[i],":")
+    print("\tMongo:")
+    print("\t\ttotal:",round(mongo_times[i], DECIMALS))
+    print("\t\taverage:",round(mongo_times[i]/ITERATIONS, DECIMALS))
+    print("\tPostgres:")
+    print("\t\ttotal:",round(postgres_times[i], DECIMALS))
+    print("\t\taverage:",round(postgres_times[i]/ITERATIONS, DECIMALS))
     
-file_name = f"results_{os.getpid()}.csv"
-mongo_times_prom=[0,0,0,0,0,0]
-postgres_times_prom=[0,0,0,0,0,0]
-for i in range(6):
-    mongo_times_prom[i]=mongo_times[i]/ITERATIONS
-    postgres_times_prom[i]=postgres_times[i]/ITERATIONS
+# file_name = f"results_{os.getpid()}.csv"
+# mongo_times_prom=[0,0,0,0,0,0]
+# postgres_times_prom=[0,0,0,0,0,0]
+# for i in range(6):
+#     mongo_times_prom[i]=mongo_times[i]/ITERATIONS
+#     postgres_times_prom[i]=postgres_times[i]/ITERATIONS
 
-result = np.array([mongo_times,mongo_times_prom,postgres_times,postgres_times_prom])
-result = result.T
+# result = np.array([mongo_times,mongo_times_prom,postgres_times,postgres_times_prom])
+# result = result.T
 
-df=pd.DataFrame(result,columns=['mongo total','mongo promedio','postgres total','postgres promedio'])
-df.to_csv(file_name)
+# df=pd.DataFrame(result,columns=['mongo total','mongo promedio','postgres total','postgres promedio'])
+# df.to_csv(file_name)
 
