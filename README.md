@@ -9,6 +9,10 @@ La idea del proyecto es realizar un benchmarking de datos geospaciales entre Pos
 * Nicolás Comerci Wolcanyk - [ncomerci](https://github.com/ncomerci)
 * Luciano Boccardi - [lboccardi](https://github.com/lboccardi)
 
+### Presentación 📽
+
+Puede ser accedida por alumnos del ITBA mediante el siguiente [enlace](https://docs.google.com/presentation/d/16bRfHhluFx2t9RGbmv_uxvw418ekgIcfpyejVEc99zM/edit?usp=sharing). 
+
 ## Queries a Ejecutar ⚡
 
 ### 1) Restaurants en cierto radio dado un cliente
