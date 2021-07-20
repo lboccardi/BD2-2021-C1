@@ -171,27 +171,3 @@ class MongoDB:
     def writeIterationNum(self,i):
         print("Iteration",i,":\n",file=self.file)
 
-# if __name__ == '__main__':
-#     uri = "mongodb://{}:{}@{}:{}".format(MG_USER, MG_PASSWORD, IP_ADDRESS, PORT)
-#     # uri = "mongodb://localhost:27017/academica"
-
-#     db = connect_to_mongo(uri, DB_NAME)
-#     #collection = db['restaurants']
-
-#     random_restaurant = findRandomRestaurant(db)
-#     start_time = time.time()
-#     #result = restaurants_by_radius(collection, {"type": "Point", "coordinates": [-74.89021, 44.9213]}, 5000)
-#     result = find_state_by_restaurant(db, random_restaurant)
-#     print("Execution query time:", time.time() - start_time)
-#     print(f"state: {list(result)[0]['properties']['name']}")
-    
-    
-    
-#     ######################
-
-#     # random_restaurant = findRandomRestaurant(db)
-#     # findNearestCompetitor(db,random_restaurant)
-
-#     # random_state = findRandomState(db)
-#     #findRestaurantsInState(db,random_state)
-#     # findFranchiseCountInState(db,random_state)

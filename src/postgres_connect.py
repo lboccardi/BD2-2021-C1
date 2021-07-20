@@ -111,32 +111,4 @@ class Postgis:
     def writeIterationNum(self,i):
         print("Iteration",i,":\n",file=self.file)
 
-# if __name__ == '__main__':
-
-#     conn = connect_to_postgres(DB_NAME, PG_USER, PG_PASSWORD, IP_ADDRESS, PORT)
-#     cur = conn.cursor(cursor_factory=RealDictCursor)
-
-#     rest = findRandomRestaurant(cur)
-
-#     start_time = time.time()
-
-#     result = find_state_by_restaurant(cur, dict(rest))
-
-#     # cur.execute(f"SELECT * FROM STATES")
-#     result = restaurants_by_radius(cur, "-74.89021, 44.9213", 5000)
-
-#     #print("Execution query time:", time.time() - start_time)
-#     #print(dict(result[0]))
-
-#     # for i in cur.fetchall():
-#     #     print(i[1])
-
-#     #random_restaurant = findRandomRestaurant(cur)
-#     #findNearestCompetitor(cur,random_restaurant)
-
-#     #random_state = findRandomState(cur)
-#     #findRestaurantsInState(cur,random_state)
-#     #findFranchiseCountInState(cur,random_state)
-#     cur.close()
-#     conn.close()
 
