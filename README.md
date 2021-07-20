@@ -115,10 +115,10 @@ Como complemento a los datasets generados, se creó uno extra utilizando la herr
 
 ### Postgres
 
-* ```restaurants.csv```: [Link](https://s3.console.aws.amazon.com/s3/object/bd2-2021c1-lnt-bucket?region=us-east-1&prefix=postgres/restaurants.csv)
-* ```customers.csv```: [Link](https://s3.console.aws.amazon.com/s3/object/bd2-2021c1-lnt-bucket?region=us-east-1&prefix=postgres/customers.csv)
-* ```states.csv```: [Link](https://s3.console.aws.amazon.com/s3/object/bd2-2021c1-lnt-bucket?region=us-east-1&prefix=postgres/states.csv)
-* ```counties.csv```: [Link](https://s3.console.aws.amazon.com/s3/object/bd2-2021c1-lnt-bucket?region=us-east-1&prefix=postgres/counties.csv)
+* ```restaurants.csv```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/postgres/restaurants.csv)
+* ```customers.csv```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/postgres/customers.csv)
+* ```states.csv```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/postgres/states.csv)
+* ```counties.csv```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/postgres/counties.csv)
 
 ```sql
 CREATE EXTENSION postgis;
@@ -189,10 +189,10 @@ UPDATE counties SET boundaries = ST_GeomFromText(wkt, 4326);
 
 Se recomienda utlizar la herramienta MongoCompass que permite importar directamente un Array ```JSON``` que corresponde a un array de Features según el formato ```GeoJson```. Alternativamente se puede utilizar la funcionalidad de MongoImport.
 
-* ```restaurants.json```: [Link](https://s3.console.aws.amazon.com/s3/object/bd2-2021c1-lnt-bucket?region=us-east-1&prefix=mongo/restaurants.json)
-* ```customers.json```: [Link](https://s3.console.aws.amazon.com/s3/object/bd2-2021c1-lnt-bucket?region=us-east-1&prefix=mongo/customers.json)
-* ```states.json```: [Link](https://s3.console.aws.amazon.com/s3/object/bd2-2021c1-lnt-bucket?region=us-east-1&prefix=mongo/states.json)
-* ```counties.json```: [Link](https://s3.console.aws.amazon.com/s3/object/bd2-2021c1-lnt-bucket?region=us-east-1&prefix=mongo/counties.json)
+* ```restaurants.json```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/mongo/restaurants.json)
+* ```customers.json```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/mongo/customers.json)
+* ```states.json```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/mongo/states.json)
+* ```counties.json```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/mongo/counties.json)
 
 Para cada una de las colecciones, crear un índice de tipo ```2dsphere``` sobre el atributo ```geometry```.
 
