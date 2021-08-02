@@ -119,10 +119,10 @@ Como complemento a los datasets generados, se creó uno extra utilizando la herr
 
 ### Postgres
 
-* ```restaurants.csv```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/postgres/restaurants.csv)
-* ```customers.csv```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/postgres/customers.csv)
-* ```states.csv```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/postgres/states.csv)
-* ```counties.csv```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/postgres/counties.csv)
+* ```restaurants.csv```
+* ```customers.csv```
+* ```states.csv```
+* ```counties.csv```
 
 ```sql
 CREATE EXTENSION postgis;
@@ -193,10 +193,10 @@ UPDATE counties SET boundaries = ST_GeomFromText(wkt, 4326);
 
 Se recomienda utlizar la herramienta MongoCompass que permite importar directamente un Array ```JSON``` que corresponde a un array de Features según el formato ```GeoJson```. Alternativamente se puede utilizar la funcionalidad de MongoImport.
 
-* ```restaurants.json```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/mongo/restaurants.json)
-* ```customers.json```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/mongo/customers.json)
-* ```states.json```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/mongo/states.json)
-* ```counties.json```: [Link](https://bd2-2021c1-lnt-bucket.s3.amazonaws.com/mongo/counties.json)
+* ```restaurants.json```
+* ```customers.json```
+* ```states.json```
+* ```counties.json```
 
 Para cada una de las colecciones, crear un índice de tipo ```2dsphere``` sobre el atributo ```geometry```.
 
